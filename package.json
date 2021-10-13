@@ -1,26 +1,18 @@
 {
-  "name": "react-async-hooks",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
+  "name": "react-js-async-hooks",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "wladimirguerra/react-async-hooks",
+  "peerDependencies": {
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "typescript": "^4.1.2",
-    "web-vitals": "^1.0.1"
+    "react-dom": "^17.0.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "clean": "shx rm -Rf dist/*",
+    "build": "yarn run clean && tsc",
+    "build&publish": "yarn run buildDocs && yarn run build && yarn publish",
+    "test": "jest",
+    "buildDocs": "typedoc --disableSources"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +31,28 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^3.8.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "eslint-config-prettier": "7.1.0",
+    "eslint-plugin-prettier": "3.3.0",
+    "jetifier": "^1.6.6",
+    "prettier": "2.2.1",
+    "react-scripts": "4.0.3",
+    "ts-jest": "^26.0.0",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
   }
 }

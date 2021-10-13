@@ -1,0 +1,6 @@
+.idea
+node_modules
+.prettierrc.js
+server/node_modules
+server/public
+dist
