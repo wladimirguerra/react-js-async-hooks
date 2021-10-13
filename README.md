@@ -1,8 +1,9 @@
-# React Async Hooks
+# React.JS Async Hooks
 
 > Simple yet effective hooks to handle async functions within react components.
 
 [![NPM](https://img.shields.io/npm/v/react-js-async-hooks.svg)](https://www.npmjs.com/package/react-common-mui-components) [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-prettier-blueviolet)](https://prettier.io)
+![GitHub](https://img.shields.io/github/license/wladimirguerra/react-js-async-hooks)
 
 The aim of this library is to prevent boilerplate code to handle async callback, providing a simple interface to deal
 with states changes.
@@ -25,8 +26,7 @@ yarn add react-js-async-hooks
 
 ### ESLint Configuration
 
-`exhaustive-deps` can be configure to validate dependencies of
-`useAsyncEffect` hook.
+`exhaustive-deps` can be configure to validate dependencies of `useAsyncEffect` and `useAsyncCallback` hooks.
 
 > *The dependency validation is highly recommended!*
 
@@ -52,9 +52,9 @@ see [`eslint-plugin-react-hooks` documentation.](https://www.npmjs.com/package/e
 
 This library complys ECMAScript standard, so it is not compatible
 with [Node.JS defaults](https://nodejs.org/api/esm.html#esm_enabling). In order to proper run the tests using this
-library you need to configure Jest properly.
+library you need to configure Jest.
 
-In your `jest.config.js` include this library in the `transformIgnorePattern` option and enable ts-jest transformation,
+In your `jest.config.js`, include this library in the `transformIgnorePattern` option and enable `ts-jest` transformation,
 like this:
 
 ```js
@@ -73,9 +73,9 @@ module.exports = {
 };
 ```
 
-In your `tsconfig.json` file make shure that `allowJs` is `true`.
+In your `tsconfig.json` file make sure that `allowJs` is `true`.
 
-If you don't want to mess your `tsconfig.json` file you can configure the
+If you don't want to mess your `tsconfig.json` file, you can configure the
 `jest.config.js` like this:
 
 ```js
@@ -89,7 +89,7 @@ module.exports = {
   transformIgnorePatterns: [
     "<rootDir>/node_modules/(?!react-common-mui-components)",
   ],
-  // Specifies a different tsconfig file for testing
+  // Specify a different tsconfig file for testing
   globals: {
     "ts-jest": {
       tsconfig: "tsconfig.test.json",
@@ -164,7 +164,7 @@ const Component = () => {
         // DON'T CHANGE STATES HERE!!
       }
     }),
-    [fetchCountries]
+    [query]
   );
 
   const handleSelect = (country: Country) => {

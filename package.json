@@ -1,10 +1,12 @@
 {
   "name": "react-js-async-hooks",
-  "version": "1.0.1",
+  "version": "1.0.2",
+  "keywords": ["react", "async", "callback", "hook"],
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "wladimirguerra/react-async-hooks",
+  "repository": "wladimirguerra/react-js-async-hooks",
+  "homepage": "https://wladimirguerra.github.io/react-js-async-hooks/",
   "peerDependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2"

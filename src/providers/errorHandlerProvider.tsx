@@ -4,7 +4,7 @@ export type ErrorHandlerCallback = (e: Error) => void;
 
 export const ErrorHandlerContext = createContext<ErrorHandlerCallback | undefined>(undefined);
 
-interface ErrorHandlerProviderProps {
+export interface ErrorHandlerProviderProps {
     errorHandlerCallback: ErrorHandlerCallback;
 }
 

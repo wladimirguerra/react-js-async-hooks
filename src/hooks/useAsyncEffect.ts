@@ -10,8 +10,8 @@ export type UnsafeAsyncCallback<T> = () => Promise<T | void | undefined> | undef
 export interface AsyncCallback<T, E extends HasCanceledError = HasCanceledError> {
     asyncCallback: UnsafeAsyncCallback<T>;
     /**
-     * Here is were the states changes in response to async
-     * callback result should be. There is no need to be concerned with memory
+     * Here is where should be the states change in response to async
+     * callback result. There is no need to be concerned with memory
      * leaks or race conditions.
      * @param result The `asyncCallback` result.
      */
@@ -33,7 +33,7 @@ export interface AsyncCallback<T, E extends HasCanceledError = HasCanceledError>
 }
 
 /**
- * This hook provide a way to call any async function without the need to handle
+ * This hook provides a way to call any async function without the need to handle
  * race conditions or memory leak problems.
  *
  * The state change due to errors response must be done within `onError`
