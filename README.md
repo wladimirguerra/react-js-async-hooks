@@ -4,8 +4,8 @@
 
 [![NPM](https://img.shields.io/npm/v/react-js-async-hooks.svg)](https://www.npmjs.com/package/react-common-mui-components) [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-prettier-blueviolet)](https://prettier.io)
 
-The aim of this library is to prevent boilerplate code to handle async callback,
-providing a simple interface to deal with states changes.
+The aim of this library is to prevent boilerplate code to handle async callback, providing a simple interface to deal
+with states changes.
 
 ## Install
 
@@ -48,15 +48,14 @@ Add or edit `"react-hooks/exhaustive-deps"` rule to have something like the foll
 For more details
 see [`eslint-plugin-react-hooks` documentation.](https://www.npmjs.com/package/eslint-plugin-react-hooks)
 
-
 ### Jest Configuration
 
-This library complys ECMAScript standard, so it is not compatible with [Node.JS
-defaults](https://nodejs.org/api/esm.html#esm_enabling). In order to proper
-run the tests using this library you need to configure Jest properly.
+This library complys ECMAScript standard, so it is not compatible
+with [Node.JS defaults](https://nodejs.org/api/esm.html#esm_enabling). In order to proper run the tests using this
+library you need to configure Jest properly.
 
-In your `jest.config.js` include this library in the `transformIgnorePattern` option
-and enable ts-jest transformation, like this:
+In your `jest.config.js` include this library in the `transformIgnorePattern` option and enable ts-jest transformation,
+like this:
 
 ```js
 
@@ -99,7 +98,7 @@ module.exports = {
 };
 ```
 
-And create a `tsconfig.test.json` file with: 
+And create a `tsconfig.test.json` file with:
 
 ```json
 {
@@ -130,8 +129,7 @@ const Component = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const status = useAsyncEffect(
-    // ATTENTION TO THE FOLLOWING LINE
-    () => ({ 
+    () => ({
       asyncCallback: () => {
         // Must return the promise, so it is possible to
         // cancel it if needed, or to proper send result to
@@ -146,7 +144,7 @@ const Component = () => {
       onError: (error) => {
         // Handle errors here
         // IT IS SAFE TO CHANGE STATES HERE
-        
+
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
@@ -178,7 +176,7 @@ const Component = () => {
       <Loading
         show={status === AsyncCallbackStatus.evaluating}
       />
-      <ErrorMessage message={errorMessage}/>
+      <ErrorMessage message={errorMessage} />
       <CountrySelector
         countries={countries}
         onSelect={handleSelect}
@@ -191,102 +189,62 @@ const Component = () => {
 
 ### `useAsyncCallback`
 
-This hook provides a way to execute the async callback within an 
-imperative function.
+This hook provides a way to execute the async callback within an imperative function.
 
 #### Usage:
 
  ```tsx
- import { useAsyncCallbackExecutor } from "react-async-hooks"
+import { useAsyncCallback } from "react-js-async-hooks"
+import axios from "axios";
+import { AsyncCallbackStatus } from "./enums";
 //[...]
 
-const mutateAddress = async(address: Address) => {
-  // async request code to save updated address
-  // [...]
-  return savedAddress
-}
-
 const Component: React.FC = (props) => {
-  const updateAddress = useAsyncCallback(mutateAddress,[]);
+  const updateAddress = useAsyncCallback(
+    (address: Address) =>
+      // Must return the Promise!!!
+      axios.post(
+        encodeURI(`/address/${address.id}/save`),
+        { ...address }
+      ),
+    []
+  );
   const countries = useCountries();
   const [address, setAddress] = useState<Address>()
+  const [status, setStatus] = useState(AsyncCallbackStatus.idle);
 
   function handleSelect(country: Country) {
-    const newAddress = { ...address, country }
-    updateAddressExecutor.execute(
-      updateAddressMutation(newAddress),
-      {
-        onSuccess: (updatedAddress) => {
-          // Do whatherver you want with the async callback result
+    const updatedAddress = { ...address, country }
+    setStatus(AsyncCallbackStatus.evaluating)
+    updateAddress(updatedAddress)
+      .then((savedAddress) => {
+        // Do whatherver you want with the async callback result
+        // IT IS SAFE TO CHANGE STATES HERE
+        setAddress(savedAddress);
+        setStatus(AsyncCallbackStatus.success)
+      })
+      .catch((e) => {
+        // Handle error here
+        
+        if (!e.isCanceled) {
           // IT IS SAFE TO CHANGE STATES HERE
-          setAddress(updatedAddress);
-        },
-        onError: (e) => {
-          // Handle error here if you like or set a handler using
-          // the ErrorHandlerProvider
-          // IT IS SAFE TO CHANGE STATES HERE
-        },
-        cleanup: () => {
-          // Handle subscription removal here.
-          // DON'T CHANGE STATES HERE!!
+          setStatus(AsyncCallbackStatus.failed)
         }
-      }
-    )
+        
+        // IT IS NOT SAFE TO CHANGE STATES HERE
+      });
   }
 
   return (
     <div>
-      <Loading show={updateAddressExecutor.evaluating} />
+      <AddressUpdateStatus status={status} />
       <CountrySelector
         countries={countries}
         onSelect={handleSelect}
         value={address.country}
       />
+      <!-- ... -->
     </div>
   )
 }
  ```
-
-For multiple async callbacks in a React component, each callback must be 
-executed for its own executor.
-
-```tsx
-import { useAsyncCallbackExecutor } from "./useAsyncCallbackExecutor";
-import { createTodo, deleteTodo } from "./api"
-
-const Component = () => {
-  const [todoList, setTodoList] = useState([]);
-  //...
-  const createTodoExecutor = useAsyncCallbackExecutor()
-  const deleteTodoExecutor = useAsyncCallbackExecutor()
-  //...
-
-  const handleCreateTodo = (params) => {
-    createTodoExecutor.execute(
-      createTodo(params),
-      {
-        onSuccess: 
-          (savedTodo) => setTodoList(list => [...list, savedTodo]),
-      }
-    )
-  }
-
-  const handleDeleteTodo = (todo: Todo) => {
-    deleteTodoExecutor.execute(
-      deleteTodo(todo),
-      {
-        onSuccess: 
-          (deletedTodo) => setTodoList(list => list.filter(todo => todo.id !== deletedTodo.id)),
-      }
-    )
-  }
-
-  return (
-    <div>
-      <Progress show={createTodoExecutor.evaluating} />
-      {/* ... */}
-      <TodoList list={todoList} />
-    </div>
-  )
-}
-```
