@@ -1,6 +1,6 @@
 {
   "name": "react-js-async-hooks",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "keywords": ["react", "async", "callback", "hook"],
   "license": "MIT",
   "main": "dist/index.js",
