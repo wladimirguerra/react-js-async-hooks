@@ -67,7 +67,7 @@ module.exports = {
     ...tsjPreset.transform,
   },
   transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!react-common-mui-components)",
+    "<rootDir>/node_modules/(?!react-js-async-hooks)",
   ],
   // [...]
 };
@@ -87,7 +87,7 @@ module.exports = {
     ...tsjPreset.transform,
   },
   transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!react-common-mui-components)",
+    "<rootDir>/node_modules/(?!react-js-async-hooks)",
   ],
   // Specify a different tsconfig file for testing
   globals: {
